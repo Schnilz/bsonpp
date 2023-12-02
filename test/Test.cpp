@@ -226,7 +226,7 @@ TEST_F(Test, GetKeyCount) {
 }
 
 TEST_F(Test, GetTypeAt) {
-    uint8_t type = BSONPP_INVALID_TYPE;
+    BSONPP_TYPE type = BSONPP_INVALID_TYPE;
     ASSERT_EQ(BSONPP_KEY_NOT_FOUND, bson.getTypeAt(0, &type));
     ASSERT_EQ(BSONPP_INVALID_TYPE, type);
 

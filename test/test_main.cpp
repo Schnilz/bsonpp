@@ -61,7 +61,7 @@ void test_float_decoding(void) {
 
 void test_get_type_at(void) {
     TEST_ASSERT_EQUAL(BSONPP_SUCCESS, bson.append("a", int32_t{1000}));
-    uint8_t type = BSONPP_INVALID_TYPE;
+    BSONPP_TYPE type = BSONPP_INVALID_TYPE;
     TEST_ASSERT_EQUAL(BSONPP_SUCCESS, bson.getTypeAt(0, &type));
     TEST_ASSERT_EQUAL(BSONPP_INT32, type);
 }
