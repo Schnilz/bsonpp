@@ -17,7 +17,7 @@ void BSONPP::clear() {
     this->setSize(5);
 }
 
-int32_t BSONPP::getSize() {
+int32_t BSONPP::getSize() const {
     int32_t size = 0;
     memcpy(&size, m_buffer, sizeof(int32_t));
     return letoh32(size);
@@ -28,19 +28,19 @@ void BSONPP::setSize(int32_t size) {
     memcpy(m_buffer, &swapped, sizeof(int32_t));
 }
 
-uint8_t *BSONPP::getBuffer() {
+uint8_t *BSONPP::getBuffer() const {
     return m_buffer;
 }
 
-int32_t BSONPP::getBufferSize() {
+int32_t BSONPP::getBufferSize() const {
     return m_length;
 }
 
-bool BSONPP::exists(const char *key) {
+bool BSONPP::exists(const char *key) const {
     return this->getOffset(key) > 0;
 }
 
-BSONPP_ERROR BSONPP::getKeyCount(int32_t *countOut) {
+BSONPP_ERROR BSONPP::getKeyCount(int32_t *countOut) const {
     int32_t count = 0;
     // Start at the end of the header.
     int32_t offset = sizeof(int32_t);
@@ -63,7 +63,7 @@ BSONPP_ERROR BSONPP::getKeyCount(int32_t *countOut) {
     return BSONPP_SUCCESS;
 }
 
-BSONPP_ERROR BSONPP::getKeyAt(int32_t index, char **key) {
+BSONPP_ERROR BSONPP::getKeyAt(int32_t index, char **key) const {
     int32_t offset = this->getOffset(index);
 
     if (BSONPP_INVALID_TYPE == BSONPP::getType(m_buffer + offset)) {
@@ -75,7 +75,7 @@ BSONPP_ERROR BSONPP::getKeyAt(int32_t index, char **key) {
     return BSONPP_SUCCESS;
 }
 
-BSONPP_ERROR BSONPP::getTypeAt(int32_t index, BSONPP_TYPE *type) {
+BSONPP_ERROR BSONPP::getTypeAt(int32_t index, BSONPP_TYPE *type) const {
     int32_t offset = this->getOffset(index);
 
     if (BSONPP_INVALID_TYPE == BSONPP::getType(m_buffer + offset)) {
@@ -126,7 +126,7 @@ BSONPP_ERROR BSONPP::append(const char *key, bool val) {
     return this->appendInternal(key, BSONPP_BOOLEAN, &converted, 1);
 }
 
-int32_t BSONPP::get(const char *key, int32_t *val) {
+int32_t BSONPP::get(const char *key, int32_t *val) const {
     int32_t offset = this->getOffset(key, BSONPP_INT32);
 
     if (offset < 0) {
@@ -139,7 +139,7 @@ int32_t BSONPP::get(const char *key, int32_t *val) {
     return BSONPP_SUCCESS;
 }
 
-int32_t BSONPP::get(const char *key, int64_t *val) {
+int32_t BSONPP::get(const char *key, int64_t *val) const {
     int32_t offset = this->getOffset(key);
     if (offset < 0) {
         return offset;
@@ -162,7 +162,7 @@ int32_t BSONPP::get(const char *key, int64_t *val) {
     }
 }
 
-int32_t BSONPP::get(const char *key, double *val) {
+int32_t BSONPP::get(const char *key, double *val) const {
     int32_t offset = this->getOffset(key, BSONPP_DOUBLE);
     if (offset < 0) {
         return offset;
@@ -177,7 +177,7 @@ int32_t BSONPP::get(const char *key, double *val) {
     return BSONPP_SUCCESS;
 }
 
-int32_t BSONPP::get(const char *key, BSONPP *val) {
+int32_t BSONPP::get(const char *key, BSONPP *val) const {
     int32_t offset = this->getOffset(key);
     if (offset < 0) {
         return offset;
@@ -193,7 +193,7 @@ int32_t BSONPP::get(const char *key, BSONPP *val) {
     return BSONPP_SUCCESS;
 }
 
-int32_t BSONPP::get(const char *key, char **val) {
+int32_t BSONPP::get(const char *key, char **val) const {
     int32_t offset = this->getOffset(key, BSONPP_STRING);
     if (offset < 0) {
         return offset;
@@ -205,7 +205,7 @@ int32_t BSONPP::get(const char *key, char **val) {
     return BSONPP_SUCCESS;
 }
 
-int32_t BSONPP::get(const char *key, uint8_t **val, int32_t *length) {
+int32_t BSONPP::get(const char *key, uint8_t **val, int32_t *length) const {
     int32_t offset = this->getOffset(key, BSONPP_BINARY);
     if (offset < 0) {
         return offset;
@@ -224,7 +224,7 @@ int32_t BSONPP::get(const char *key, uint8_t **val, int32_t *length) {
     return BSONPP_SUCCESS;
 }
 
-int32_t BSONPP::get(const char *key, bool *val) {
+int32_t BSONPP::get(const char *key, bool *val) const {
     int32_t offset = this->getOffset(key, BSONPP_BOOLEAN);
     if (offset < 0) {
         return offset;
@@ -331,7 +331,7 @@ uint8_t *BSONPP::getData(uint8_t *data) {
     return data + 1 + strlen(reinterpret_cast<char *>(data + 1)) + 1;
 }
 
-int32_t BSONPP::getOffset(const char *key, BSONPP_TYPE type) {
+int32_t BSONPP::getOffset(const char *key, BSONPP_TYPE type) const {
     // Start at the end of the header.
     int32_t offset = sizeof(int32_t);
     // Minus 1 for the object null terminator
@@ -362,7 +362,7 @@ int32_t BSONPP::getOffset(const char *key, BSONPP_TYPE type) {
     return BSONPP_KEY_NOT_FOUND;
 }
 
-int32_t BSONPP::getOffset(int32_t index) {
+int32_t BSONPP::getOffset(int32_t index) const {
     // Start at the end of the header.
     int32_t offset = sizeof(int32_t);
     // Minus 1 for the object null terminator

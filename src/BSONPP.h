@@ -35,37 +35,39 @@ public:
   BSONPP(uint8_t *buffer, int32_t length, bool clear = true);
   BSONPP();
 
-  int32_t getSize();
-  uint8_t *getBuffer();
-  int32_t getBufferSize();
+  int32_t getSize() const;
+  uint8_t *getBuffer() const;
+  int32_t getBufferSize() const;
   void clear();
-  bool exists(const char *key);
+  bool exists(const char *key) const;
   // Various functions for easy iteration.
-  BSONPP_ERROR getKeyCount(int32_t *count);
-  BSONPP_ERROR getKeyAt(int32_t index, char **key);
-  BSONPP_ERROR getTypeAt(int32_t index, BSONPP_TYPE *type);
+  BSONPP_ERROR getKeyCount(int32_t *count) const;
+  BSONPP_ERROR getKeyAt(int32_t index, char **key) const;
+  BSONPP_ERROR getTypeAt(int32_t index, BSONPP_TYPE *type) const;
 
   BSONPP_ERROR append(const char *key, int32_t val);
   BSONPP_ERROR append(const char *key, int64_t val, bool dateTime = false);
   BSONPP_ERROR append(const char *key, double val);
   BSONPP_ERROR append(const char *key, const char *val);
   BSONPP_ERROR append(const char *key, BSONPP *val, bool isArray = false);
-  BSONPP_ERROR append(const char *key, const uint8_t *data, const int32_t length);
+  BSONPP_ERROR append(const char *key, const uint8_t *data,
+                      const int32_t length);
   BSONPP_ERROR append(const char *key, bool val);
 
-  int32_t get(const char *key, int32_t *val);
-  int32_t get(const char *key, int64_t *val);
-  int32_t get(const char *key, double *val);
-  int32_t get(const char *key, BSONPP *val);
-  int32_t get(const char *key, char **val);
-  int32_t get(const char *key, uint8_t **val, int32_t *length = nullptr);
-  int32_t get(const char *key, bool *val);
+  int32_t get(const char *key, int32_t *val) const;
+  int32_t get(const char *key, int64_t *val) const;
+  int32_t get(const char *key, double *val) const;
+  int32_t get(const char *key, BSONPP *val) const;
+  int32_t get(const char *key, char **val) const;
+  int32_t get(const char *key, uint8_t **val, int32_t *length = nullptr) const;
+  int32_t get(const char *key, bool *val) const;
 
 private:
-  BSONPP_ERROR appendInternal(const char *key, uint8_t type, const uint8_t *data,
-                         int32_t length);
-  int32_t getOffset(const char *key, BSONPP_TYPE type = BSONPP_INVALID_TYPE);
-  int32_t getOffset(int32_t index);
+  BSONPP_ERROR appendInternal(const char *key, uint8_t type,
+                              const uint8_t *data, int32_t length);
+  int32_t getOffset(const char *key,
+                    BSONPP_TYPE type = BSONPP_INVALID_TYPE) const;
+  int32_t getOffset(int32_t index) const;
   void setSize(int32_t size);
   // Type size is inclusive of the length field for variable length values.
   static int32_t getTypeSize(BSONPP_TYPE type, uint8_t *data);
