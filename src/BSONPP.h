@@ -54,13 +54,13 @@ public:
                       const int32_t length);
   BSONPP_ERROR append(const char *key, bool val);
 
-  int32_t get(const char *key, int32_t *val) const;
-  int32_t get(const char *key, int64_t *val) const;
-  int32_t get(const char *key, double *val) const;
-  int32_t get(const char *key, BSONPP *val) const;
-  int32_t get(const char *key, char **val) const;
-  int32_t get(const char *key, uint8_t **val, int32_t *length = nullptr) const;
-  int32_t get(const char *key, bool *val) const;
+  BSONPP_ERROR get(const char *key, int32_t *val) const;
+  BSONPP_ERROR get(const char *key, int64_t *val) const;
+  BSONPP_ERROR get(const char *key, double *val) const;
+  BSONPP_ERROR get(const char *key, BSONPP *val) const;
+  BSONPP_ERROR get(const char *key, char **val) const;
+  BSONPP_ERROR get(const char *key, uint8_t **val, int32_t *length = nullptr) const;
+  BSONPP_ERROR get(const char *key, bool *val) const;
 
 private:
   BSONPP_ERROR appendInternal(const char *key, uint8_t type,

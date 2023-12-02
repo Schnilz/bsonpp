@@ -126,11 +126,11 @@ BSONPP_ERROR BSONPP::append(const char *key, bool val) {
     return this->appendInternal(key, BSONPP_BOOLEAN, &converted, 1);
 }
 
-int32_t BSONPP::get(const char *key, int32_t *val) const {
+BSONPP_ERROR BSONPP::get(const char *key, int32_t *val) const {
     int32_t offset = this->getOffset(key, BSONPP_INT32);
 
     if (offset < 0) {
-        return offset;
+        return BSONPP_ERROR(offset);
     }
 
     memcpy(val, BSONPP::getData(m_buffer + offset), sizeof(int32_t));
@@ -139,10 +139,10 @@ int32_t BSONPP::get(const char *key, int32_t *val) const {
     return BSONPP_SUCCESS;
 }
 
-int32_t BSONPP::get(const char *key, int64_t *val) const {
+BSONPP_ERROR BSONPP::get(const char *key, int64_t *val) const {
     int32_t offset = this->getOffset(key);
     if (offset < 0) {
-        return offset;
+        return BSONPP_ERROR(offset);
     }
     uint8_t *data = BSONPP::getData(m_buffer + offset);
 
@@ -162,10 +162,10 @@ int32_t BSONPP::get(const char *key, int64_t *val) const {
     }
 }
 
-int32_t BSONPP::get(const char *key, double *val) const {
+BSONPP_ERROR BSONPP::get(const char *key, double *val) const {
     int32_t offset = this->getOffset(key, BSONPP_DOUBLE);
     if (offset < 0) {
-        return offset;
+        return BSONPP_ERROR(offset);
     }
 
     uint8_t *data = BSONPP::getData(m_buffer + offset);
@@ -177,10 +177,10 @@ int32_t BSONPP::get(const char *key, double *val) const {
     return BSONPP_SUCCESS;
 }
 
-int32_t BSONPP::get(const char *key, BSONPP *val) const {
+BSONPP_ERROR BSONPP::get(const char *key, BSONPP *val) const {
     int32_t offset = this->getOffset(key);
     if (offset < 0) {
-        return offset;
+        return BSONPP_ERROR(offset);
     }
     uint8_t type = BSONPP::getType(m_buffer + offset);
     if (BSONPP_DOCUMENT != type && BSONPP_ARRAY != type) {
@@ -193,10 +193,10 @@ int32_t BSONPP::get(const char *key, BSONPP *val) const {
     return BSONPP_SUCCESS;
 }
 
-int32_t BSONPP::get(const char *key, char **val) const {
+BSONPP_ERROR BSONPP::get(const char *key, char **val) const {
     int32_t offset = this->getOffset(key, BSONPP_STRING);
     if (offset < 0) {
-        return offset;
+        return BSONPP_ERROR(offset);
     }
 
     // +sizeof(int32_t) to skip length
@@ -205,10 +205,10 @@ int32_t BSONPP::get(const char *key, char **val) const {
     return BSONPP_SUCCESS;
 }
 
-int32_t BSONPP::get(const char *key, uint8_t **val, int32_t *length) const {
+BSONPP_ERROR BSONPP::get(const char *key, uint8_t **val, int32_t *length) const {
     int32_t offset = this->getOffset(key, BSONPP_BINARY);
     if (offset < 0) {
-        return offset;
+        return BSONPP_ERROR(offset);
     }
 
     uint8_t *data = BSONPP::getData(m_buffer + offset);
@@ -224,10 +224,10 @@ int32_t BSONPP::get(const char *key, uint8_t **val, int32_t *length) const {
     return BSONPP_SUCCESS;
 }
 
-int32_t BSONPP::get(const char *key, bool *val) const {
+BSONPP_ERROR BSONPP::get(const char *key, bool *val) const {
     int32_t offset = this->getOffset(key, BSONPP_BOOLEAN);
     if (offset < 0) {
-        return offset;
+        return BSONPP_ERROR(offset);
     }
 
     *val = BSONPP::getData(m_buffer + offset)[0] == BSONPP_BOOLEAN_TRUE;
